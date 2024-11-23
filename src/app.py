@@ -14,6 +14,21 @@ def listar_archivos(carpeta):
     archivos = [f for f in os.listdir(carpeta) if f.endswith(".xlsx")]
     return archivos
 
+# Función para cargar y combinar datos de los archivos disponibles
+def cargar_datos(carpeta):
+    archivos = listar_archivos(carpeta)
+    dataframes = []
+    for archivo in archivos:
+        file_path = os.path.join(carpeta, archivo)
+        try:
+            df = pd.read_excel(file_path)
+            dataframes.append(df)
+        except Exception as e:
+            st.warning(f"Error al leer el archivo {archivo}: {e}")
+    if dataframes:
+        return pd.concat(dataframes, ignore_index=True)
+    return pd.DataFrame()  # Retorna un DataFrame vacío si no hay datos
+
 def main():
     # Llamar la función para cargar el CSS
     load_css("estilos.css")
@@ -55,11 +70,28 @@ def main():
             f.write(uploaded_file.getbuffer())
         st.success(f"Archivo {uploaded_file.name} cargado correctamente.")
 
-        # Vista previa del archivo
-        data = pd.read_excel(uploaded_file)
-        st.write("Vista previa de los datos:")
-        st.dataframe(data)
+    # Cargar y combinar datos
+    datos = cargar_datos(carpeta)
+
+    # Barra de búsqueda
+    st.header("Búsqueda de Programas Académicos")
+    palabra_clave = st.text_input("Ingresa palabras clave para buscar programas académicos:")
+
+    if not datos.empty:
+        if palabra_clave:
+            # Filtrar datos que contengan las palabras clave en cualquier columna
+            resultados = datos[
+                datos.apply(lambda row: row.astype(str).str.contains(palabra_clave, case=False).any(), axis=1)
+            ]
+            if not resultados.empty:
+                st.write("Resultados encontrados:")
+                st.dataframe(resultados)
+            else:
+                st.write("No se encontraron resultados para la búsqueda.")
+        else:
+            st.write("Ingresa una palabra clave para comenzar la búsqueda.")
+    else:
+        st.write("No hay datos disponibles para buscar.")
 
 if __name__ == "__main__":
     main()
-
