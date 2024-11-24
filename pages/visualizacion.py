@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import cargar_datos
+from pages.utils import cargar_datos
 
 def visualizacion_datos(carpeta):
     """Página para visualizar datos cargados."""

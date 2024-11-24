@@ -10,7 +10,7 @@ Proyecto_3
 
 ---
 
-## **controlador_datos**
+## **controller_data**
 - **Atributos:**
   - `programas_data`: Un DataFrame que contiene los datos principales de los programas académicos.
   - `datasets`: Un diccionario donde:
@@ -80,7 +80,7 @@ classDiagram
         +renderizar_web() void
     }
     
-    class controlador_datos {
+    class controller_data {
         -programas_data: DataFrame
         -datasets: dict<str, dict<str, DataFrame>>  
         -data_frame_general: DataFrame 
@@ -122,8 +122,8 @@ classDiagram
     }
     
     web_app --> controlador_datos : "Administra"
-    controlador_datos --> gestor_archivos : "Usa para gestionar archivos"
-    controlador_datos --> gestor_datos : "Usa para gestionar datos"
+    controller_data --> gestor_archivos : "Usa para gestionar archivos"
+    controller_data --> gestor_datos : "Usa para gestionar datos"
     gestor_datos <|-- gestor_csv : "Hereda"
     gestor_datos <|-- gestor_xlsx : "Hereda"
     gestor_datos <|-- gestor_json : "Hereda"
