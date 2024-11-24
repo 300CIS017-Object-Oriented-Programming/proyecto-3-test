@@ -11,7 +11,7 @@ def load_css(file_name):
 def listar_archivos(carpeta):
     if not os.path.exists(carpeta):
         os.makedirs(carpeta)  # Crear la carpeta si no existe
-    archivos = [f for f in os.listdir(carpeta) if f.endswith(".xlsx")]
+    archivos = [f for f in os.listdir(carpeta) if f.endswith(".xlsx")] #Nombre-Area
     return archivos
 
 # Función para cargar y combinar datos de los archivos disponibles
