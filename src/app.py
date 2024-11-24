@@ -22,7 +22,5 @@ def main():
     with tabs[2]:
         visualizacion.visualizacion_datos(CARPETA)
 
-
-
 if __name__ == "__main__":
     main()

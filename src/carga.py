@@ -20,3 +20,4 @@ def cargar_informacion(carpeta):
         with open(f"{carpeta}/{uploaded_file.name}", "wb") as f:
             f.write(uploaded_file.getbuffer())
         st.success(f"Archivo {uploaded_file.name} cargado correctamente.")
+
