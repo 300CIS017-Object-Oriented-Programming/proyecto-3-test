@@ -2,108 +2,130 @@
 # snies_proyecto_3
 Proyecto_3
 
-## Documentación del Diagrama de Clases
+# Documentación del Diagrama de Clases
 
-### web_app
+## **web_app**
 - **Métodos:**
-  - `render_web()`: Este método se encarga de renderizar la interfaz web de la aplicación.
+  - `renderizar_web()`: Renderiza la interfaz web de la aplicación.
 
-### data_controller
+---
+
+## **controlador_datos**
 - **Atributos:**
-  - `data_frame_programas`: Un DataFrame que contiene los datos de los programas académicos.
-  - `datasets`: Un diccionario donde la clave es el tipo de dato ("admitidos", "matriculados", "neos", "graduados", "inscritos") y el valor es otro diccionario cuyas claves son el año de análisis ("2022") y el valor es el DataFrame asociado a dicho tipo de dato y año.
-  - `data_frame_general`: Un DataFrame que contiene todos los datos consolidados.
+  - `programas_data`: Un DataFrame que contiene los datos principales de los programas académicos.
+  - `datasets`: Un diccionario donde:
+    - La clave es una cadena (`str`) que representa una categoría de datos (por ejemplo, `"admitidos"`, `"graduados"`, etc.).
+    - El valor es otro diccionario que asocia cadenas (`str`) (como el año: `"2022"`) a DataFrames.
+  - `data_frame_general`: Un DataFrame que consolida todos los datos de los diferentes conjuntos.
 - **Métodos:**
-  - `filter_data(keyword: str)`: Filtra los programas académicos por nombre utilizando una palabra clave y retorna un DataFrame con los resultados.
-  - `import_data(gestor: gestor_datos, folder: str, filename: str)`: Importa datos utilizando un gestor de datos específico desde una carpeta y archivo dados.
-  - `export_data(gestor: gestor_datos, folder: str, filename: str)`: Exporta datos utilizando un gestor de datos específico a una carpeta y archivo dados.
-  - `add_to_dataset(key: str, dataframe: DataFrame)`: Añade un DataFrame a un conjunto de datos identificado por una clave.
-  - `get_dataset(key: str)`: Retorna una lista de DataFrames asociados a una clave específica.
+  - `filtrar_datos_palabra_clave(palabra_clave: str) -> DataFrame`: Filtra los datos en base a una palabra clave y retorna un DataFrame con los resultados.
+  - `importar_datos(gestor: gestor_datos, carpeta: str, archivo: str) -> None`: Importa datos desde un archivo específico utilizando un gestor de datos.
+  - `exportar_datos(gestor: gestor_datos, carpeta: str, archivo: str) -> None`: Exporta datos a un archivo específico utilizando un gestor de datos.
+  - `agregar_a_conjunto_datos(clave: str, dataframe: DataFrame) -> None`: Agrega un DataFrame al conjunto de datos identificado por la clave.
+  - `obtener_data(clave: str) -> list[DataFrame]`: Obtiene una lista de DataFrames asociados a la clave proporcionada.
 
-### file_manager
+---
+
+## **gestor_archivos**
+- **Métodos Públicos:**
+  - `crear_carpeta(carpeta: str) -> None`: Crea una carpeta si no existe.
+  - `obtener_rutas_default() -> list[str]`: Obtiene una lista de rutas de los archivos predeterminados.
+  - `obtener_rutas_temporal() -> list[str]`: Obtiene una lista de rutas de los archivos temporales.
+  - `obtener_todas_las_rutas_archivos() -> list[str]`: Obtiene una lista con todas las rutas de archivos, tanto predeterminados como temporales.
+  - `agregar_archivo(archivo: str, temporal: bool) -> None`: Agrega un archivo a la carpeta 'temp' si la flag "temporal" es True, de lo contrario lo agrega a default.
+  - `eliminar_archivo(archivo: str, temporal: bool) -> None`: Elimina un archivo de la carpeta 'temp' si la flag "temporal" es True, de lo contrario lo elimina de default.
+- **Método Privado:**
+  - `_es_nombre_valido(archivo: str) -> bool`: Verifica si un nombre de archivo cumple con las condiciones necesarias.
+
+---
+
+## **gestor_datos**
 - **Métodos:**
-  - `list_files(folder: str)`: Lista los archivos en una carpeta dada y retorna una lista de nombres de archivos.
-  - `create_folder(folder: str)`: Crea una carpeta con el nombre especificado.
-  - `get_file_path(folder: str, filename: str)`: Retorna la ruta completa de un archivo dado su carpeta y nombre.
-  - `get_all_file_paths(folder: str)`: Retorna una lista de todas las rutas de archivos en una carpeta dada.
-  - `is_valid_file_name(filename: str)`: Verifica si un nombre de archivo es válido.
+  - `importar_datos(ruta: str) -> DataFrame`: Importa datos desde la ruta especificada y los retorna como un DataFrame.
+  - `exportar_datos(datos: DataFrame, ruta: str) -> None`: Exporta un DataFrame a la ruta especificada.
 
-### gestor_datos
+---
+
+## **gestor_csv** *(Hereda de gestor_datos)*
 - **Métodos:**
-  - `importar_datos(filepath: str)`: Importa datos desde una ruta de archivo y retorna un DataFrame.
-  - `exportar_datos(data: DataFrame, filepath: str)`: Exporta un DataFrame a una ruta de archivo.
+  - `importar_datos(ruta: str) -> DataFrame`: Importa datos desde un archivo CSV.
+  - `exportar_datos(datos: DataFrame, ruta: str) -> None`: Exporta un DataFrame a un archivo CSV.
 
-### gestor_csv (Hereda de gestor_datos)
+---
+
+## **gestor_xlsx** *(Hereda de gestor_datos)*
 - **Métodos:**
-  - `importar_datos(filepath: str)`: Importa datos desde un archivo CSV y retorna un DataFrame.
-  - `exportar_datos(data: DataFrame, filepath: str)`: Exporta un DataFrame a un archivo CSV.
+  - `importar_datos(ruta: str) -> DataFrame`: Importa datos desde un archivo XLSX.
+  - `exportar_datos(datos: DataFrame, ruta: str) -> None`: Exporta un DataFrame a un archivo XLSX.
 
-### gestor_xlsx (Hereda de gestor_datos)
+---
+
+## **gestor_json** *(Hereda de gestor_datos)*
 - **Métodos:**
-  - `importar_datos(filepath: str)`: Importa datos desde un archivo XLSX y retorna un DataFrame.
-  - `exportar_datos(data: DataFrame, filepath: str)`: Exporta un DataFrame a un archivo XLSX.
+  - `importar_datos(ruta: str) -> DataFrame`: Importa datos desde un archivo JSON.
+  - `exportar_datos(datos: DataFrame, ruta: str) -> None`: Exporta un DataFrame a un archivo JSON.
 
-### gestor_json (Hereda de gestor_datos)
-- **Métodos:**
-  - `importar_datos(filepath: str)`: Importa datos desde un archivo JSON y retorna un DataFrame.
-  - `exportar_datos(data: DataFrame, filepath: str)`: Exporta un DataFrame a un archivo JSON.
+---
 
-### Relaciones
-- `web_app` administra `data_controller`.
-- `data_controller` usa `file_manager` para gestionar archivos.
-- `data_controller` usa `gestor_datos` para gestionar datos.
-- `gestor_datos` es heredado por `gestor_csv`, `gestor_xlsx` y `gestor_json` para manejar diferentes formatos de archivo.
+## **Relaciones**
+- **`web_app`** administra **`controlador_datos`**.
+- **`controlador_datos`** usa **`gestor_archivos`** para la gestión de archivos.
+- **`controlador_datos`** usa **`gestor_datos`** para la manipulación de datos.
+- **`gestor_datos`** es la clase base para **`gestor_csv`**, **`gestor_xlsx`**, y **`gestor_json`**, que implementan funcionalidades específicas para manejar diferentes formatos de archivo.
 
 
 ```mermaid
 classDiagram
     class web_app {
-        +render_web() void
+        +renderizar_web() void
     }
     
-    class data_controller {
-        -data_programas: DataFrame
+    class controlador_datos {
+        -programas_data: DataFrame
         -datasets: dict<str, dict<str, DataFrame>>  
         -data_frame_general: DataFrame 
-        +filter_data_keyword(keyword: str) DataFrame  
-        +import_data(gestor: gestor_datos, folder: str, filename: str) void
-        +export_data(gestor: gestor_datos, folder: str, filename: str) void
-        +add_to_dataset(key: str, dataframe: DataFrame) void
-        +get_dataset(key: str) list<DataFrame>
+        +filtrar_datos_palabra_clave(palabra_clave: str) DataFrame  
+        +importar_datos(gestor: gestor_datos, carpeta: str, archivo: str) void
+        +exportar_datos(gestor: gestor_datos, carpeta: str, archivo: str) void
+        +agregar_a_conjunto_datos(clave: str, dataframe: DataFrame) void
+        +obtener_data(clave: str) list<DataFrame>
     }
     
-    class file_manager {
-        +list_files(folder: str) list<str>
-        +create_folder(folder: str) void
-        -get_file_path(folder: str, filename: str) str
-        +get_all_file_paths(folder: str) list<str>
-        -is_valid_file_name(filename: str) bool
+    class gestor_archivos {
+        +crear_carpeta(carpeta: str) void
+        +obtener_rutas_default() list<str>
+        +obtener_rutas_temporal() list<str>
+        +obtener_todas_las_rutas_archivos() list<str>
+        +agregar_archivo(archivo: str) void
+        +eliminar_archivo(archivo: str) void
+        -es_nombre_valido(archivo: str) bool
     }
     
     class gestor_datos {
-        +importar_datos(filepath: str) DataFrame
-        +exportar_datos(data: DataFrame, filepath: str) void
+        +importar_datos(ruta: str) DataFrame
+        +exportar_datos(datos: DataFrame, ruta: str) void
     }
     
     class gestor_csv {
-        +importar_datos(filepath: str) DataFrame
-        +exportar_datos(data: DataFrame, filepath: str) void
+        +importar_datos(ruta: str) DataFrame
+        +exportar_datos(datos: DataFrame, ruta: str) void
     }
     
     class gestor_xlsx {
-        +importar_datos(filepath: str) DataFrame
-        +exportar_datos(data: DataFrame, filepath: str) void
+        +importar_datos(ruta: str) DataFrame
+        +exportar_datos(datos: DataFrame, ruta: str) void
     }
     
     class gestor_json {
-        +importar_datos(filepath: str) DataFrame
-        +exportar_datos(data: DataFrame, filepath: str) void
+        +importar_datos(ruta: str) DataFrame
+        +exportar_datos(datos: DataFrame, ruta: str) void
     }
     
-    web_app --> data_controller : "Administra"
-    data_controller --> file_manager : "Usa para gestionar archivos"
-    data_controller --> gestor_datos : "Usa para gestionar datos"
+    web_app --> controlador_datos : "Administra"
+    controlador_datos --> gestor_archivos : "Usa para gestionar archivos"
+    controlador_datos --> gestor_datos : "Usa para gestionar datos"
     gestor_datos <|-- gestor_csv : "Hereda"
     gestor_datos <|-- gestor_xlsx : "Hereda"
     gestor_datos <|-- gestor_json : "Hereda"
+
 
