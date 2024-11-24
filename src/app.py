@@ -1,10 +1,8 @@
 import streamlit as st
-import carga
-import filtrado
-import visualizacion
+from pages import carga, filtrado, visualizacion
 
 # Carpeta de trabajo
-CARPETA = "temp"
+CARPETA = "docs/temp"
 
 def main():
     # Pestañas principales
