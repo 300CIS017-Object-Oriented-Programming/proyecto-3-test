@@ -1,0 +1,7 @@
+# Description: This file contains the required libraries for the project.
+pandas
+streamlit
+plotly
+numpy
+openpyxl
+matplotlib
