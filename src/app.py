@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import carga, filtrado, visualizacion
+import carga, filtrado, visualizacion
 
 # Carpeta de trabajo
 CARPETA = "docs/temp"
