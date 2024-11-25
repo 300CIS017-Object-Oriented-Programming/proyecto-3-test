@@ -1,5 +1,6 @@
 import streamlit as st
 import carga, filtrado, visualizacion
+import controller_data
 
 # Carpeta de trabajo
 CARPETA = "docs/temp"
