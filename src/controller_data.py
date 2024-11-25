@@ -2,6 +2,7 @@ from gestor_datos import gestor_datos, gestor_csv, gestor_json, gestor_xlsx
 from gestor_archivos import gestor_archivos, obtener_type_year
 from collections import defaultdict
 import pandas as pd
+import plotly.express as px
 
 
 class controller_data:
@@ -82,6 +83,45 @@ class controller_data:
             consolidado = pd.concat([consolidado, pd.DataFrame([fila])], ignore_index=True)
 
         self.__consolidado = consolidado
+
+    def exportar_consolidado(self):
+        gestor = self.__gestores_datos[0]
+        gestor.exportar_datos(self.__consolidado, "../docs/outputs/consolidado.xlsx")
+
+    def exportar_filtrado(self):
+        gestor = self.__gestores_datos[0]
+        gestor.exportar_datos(self.__data_frame_filtrado, "../docs/outputs/filtrado.xlsx")
+
+    def grafica_linea_consolidado(self, tipo):
+        columnas_tipo = [col for col in self.__consolidado.columns if col.startswith(tipo.upper())]
+        if not columnas_tipo:
+            print(f"No se encontraron columnas para el tipo '{tipo}'.")
+            return
+
+        data = []
+        for _, fila in self.__consolidado.iterrows():
+            programa = fila['PROGRAMA_ACADEMICO']
+            for columna in columnas_tipo:
+                anio = int(columna.split('_')[-1])
+                valor = fila[columna]
+                data.append({'Programa Académico': programa, 'Año': anio, 'Cantidad': valor})
+
+        df_grafico = pd.DataFrame(data)
+
+        fig = px.line(
+            df_grafico,
+            x='Año',
+            y='Cantidad',
+            color='Programa Académico',
+            title=f'Evolución de {tipo.capitalize()} por Programa Académico',
+            labels={'Año': 'Año', 'Cantidad': f'{tipo.capitalize()}', 'Programa Académico': 'Programa Académico'}
+        )
+        fig.update_traces(mode='lines+markers')
+        fig.update_layout(template='plotly_white',
+                          title_text=f'Evolución de {tipo.capitalize()} por Programa Académico')
+        fig.show()
+
+
 
 
 
