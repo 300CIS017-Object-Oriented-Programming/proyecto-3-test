@@ -21,8 +21,6 @@ Proyecto_3
   - `filtrar_datos_palabra_clave(palabra_clave: str) -> DataFrame`: Filtra los datos en base a una palabra clave y retorna un DataFrame con los resultados.
   - `importar_datos(gestor: gestor_datos, carpeta: str, archivo: str) -> None`: Importa datos desde un archivo específico utilizando un gestor de datos.
   - `exportar_datos(gestor: gestor_datos, carpeta: str, archivo: str) -> None`: Exporta datos a un archivo específico utilizando un gestor de datos.
-  - `agregar_a_conjunto_datos(clave: str, dataframe: DataFrame) -> None`: Agrega un DataFrame al conjunto de datos identificado por la clave.
-  - `obtener_data(clave: str) -> list[DataFrame]`: Obtiene una lista de DataFrames asociados a la clave proporcionada.
 
 ---
 

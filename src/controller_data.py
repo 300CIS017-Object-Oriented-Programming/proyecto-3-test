@@ -33,8 +33,14 @@ class controller_data:
             extension = "csv"
         gestor.exportar_datos(self.__data_frame_filtrado, f"../docs/outputs/data_filtrado." + extension)
 
-    def
-
-
-
-
+    def filtrar_datos(self, tipo, anios, keyword):
+        for anio in anios:
+            data_frame = self.__data_sets[tipo][anio]
+            if 'PROGRAMA_ACADEMICO' in data_frame.columns:
+                # Filtra las filas donde la columna PROGRAMA_ACADEMICO contiene la palabra clave
+                filas_filtradas = data_frame[
+                    data_frame['PROGRAMA_ACADEMICO'].str.contains(keyword, case=False, na=False)]
+                # Agrega una columna con el año
+                filas_filtradas['AÑO'] = anio
+                # Agrega las filas filtradas al data_frame_filtrado
+                self.__data_frame_filtrado = pd.concat([self.__data_frame_filtrado, filas_filtradas])
