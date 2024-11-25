@@ -1,10 +1,13 @@
 import streamlit as st
 import carga, filtrado, visualizacion
+from controller_data import controller_data
+
 
 # Carpeta de trabajo
 CARPETA = "docs/temp"
 
 def main():
+    controlador = controller_data()
     # Pestañas principales
     tabs = st.tabs(["Carga de Información", "Filtrado", "Visualización"])
 
@@ -14,7 +17,7 @@ def main():
 
     # Pestaña: Filtrado
     with tabs[1]:
-        filtrado.filtrado_informacion(CARPETA)
+        filtrado.filtrado_informacion(controller_data)
 
     # Pestaña: Visualización
     with tabs[2]:

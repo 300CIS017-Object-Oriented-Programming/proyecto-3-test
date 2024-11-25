@@ -3,14 +3,13 @@ from utils import YEAR_MIN, YEAR_MAX
 from controller_data import controller_data
 
 # Instancia del controlador
-controlador = controller_data()
 
 # src/filtrado.py
 
 import streamlit as st
 from utils import YEAR_MIN, YEAR_MAX
 
-def filtrado_informacion(controller_data, controlador):
+def filtrado_informacion(controller_data):
     """Página para filtrar datos por rango de años."""
     st.header("Filtrado de Información")
     st.write("Selecciona el rango de años para filtrar los datos.")
@@ -28,7 +27,7 @@ def filtrado_informacion(controller_data, controlador):
 
 
     # Filtrar archivos por años usando el controller
-    archivos_filtrados = controller_data.filtrar_datos(controlador, lista_de_anos,keyword )
+    archivos_filtrados = controller_data.filtrar_datos(lista_de_anos,keyword)
 
     if archivos_filtrados:
         st.write("Archivos filtrados:")
