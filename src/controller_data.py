@@ -121,6 +121,55 @@ class controller_data:
                           title_text=f'Evolución de {tipo.capitalize()} por Programa Académico')
         fig.show()
 
+    def graficos_comparativos_modalidad(self, programas_academicos, tipo):
+        tipo_upper = tipo.upper()
+
+        # Validar si las columnas correspondientes al tipo están en el consolidado
+        columnas_tipo = [col for col in self.__consolidado.columns if col.startswith(tipo_upper)]
+        if not columnas_tipo:
+            print(f"No se encontraron columnas para el tipo '{tipo}' en el consolidado.")
+            return
+
+        data = []
+        for programa in programas_academicos:
+            df_programa = self.__consolidado[self.__consolidado['PROGRAMA_ACADEMICO'] == programa]
+            if df_programa.empty:
+                print(f"No se encontró información para el programa académico: {programa}")
+                continue
+
+            modalidad = df_programa['MODALIDAD'].iloc[0] if 'MODALIDAD' in df_programa.columns else 'Desconocida'
+
+            for columna in columnas_tipo:
+                anio = int(columna.split('_')[-1])  # Extraer el año de la columna
+                valor = df_programa[columna].iloc[0] if columna in df_programa.columns else 0
+                data.append({
+                    'Programa Académico': programa,
+                    'Modalidad': modalidad,
+                    'Año': anio,
+                    'Cantidad': valor
+                })
+
+        df_grafico = pd.DataFrame(data)
+
+        fig = px.bar(
+            df_grafico,
+            x='Año',
+            y='Cantidad',
+            color='Modalidad',
+            facet_row='Programa Académico',
+            title=f'Gráfico comparativo por modalidad: {tipo}',
+            labels={'Año': 'Año', 'Cantidad': 'Cantidad', 'Modalidad': 'Modalidad'}
+        )
+
+        fig.update_layout(
+            template='plotly_white',
+            title_text=f'Gráfico comparativo por modalidad: {tipo}',
+            title_x=0.5,
+            height=600 + 200 * len(programas_academicos),
+        )
+
+        fig.show()
+
 
 
 
