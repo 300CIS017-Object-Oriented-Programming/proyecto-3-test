@@ -33,7 +33,7 @@ class controller_data:
             extension = "csv"
         gestor.exportar_datos(self.__data_frame_filtrado, f"../docs/outputs/data_filtrado." + extension)
 
-    
+    def 
 
 
 
