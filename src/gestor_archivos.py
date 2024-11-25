@@ -17,8 +17,20 @@ def _es_nombre_valido(nombre_archivo):
 
     return False
 
+
+def obtener_type_year(archivo):
+    base_name = archivo.name.rsplit(".", 1)[0]
+    prefijos_validos = ["admitidos", "matriculados", "inscritos", "neos", "graduados"]
+    years_validos = [str(year) for year in range(1990, 2025)]
+    for prefijo in prefijos_validos:
+        if base_name.startswith(prefijo):
+            for year in years_validos:
+                if base_name.endswith(year):
+                    return prefijo, year
+
+
 class gestor_archivos:
-    def __init__(self, carpeta_default = "docs/default", carpeta_temp = "docs/temp"):
+    def __init__(self, carpeta_default="../docs/default", carpeta_temp="../docs/temp"):
         self.carpeta_default = carpeta_default
         self.carpeta_temp = carpeta_temp
 
@@ -39,3 +51,7 @@ class gestor_archivos:
     def eliminar_archivo(self, archivo, temporal=True):
         carpeta = self.carpeta_temp if temporal else self.carpeta_default
         os.remove(f"{carpeta}/{archivo}")
+
+    def eliminar_todos_archivos_temporales(self):
+        for archivo in self.obtener_rutas_temp():
+            self.eliminar_archivo(archivo)
