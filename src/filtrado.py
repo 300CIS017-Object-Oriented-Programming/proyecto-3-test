@@ -1,7 +1,16 @@
 import streamlit as st
-from utils import cargar_datos, YEAR_MIN, YEAR_MAX
+from utils import YEAR_MIN, YEAR_MAX
+from controller_data import controller_data
 
-def filtrado_informacion(carpeta):
+# Instancia del controlador
+controlador = controller_data()
+
+# src/filtrado.py
+
+import streamlit as st
+from utils import YEAR_MIN, YEAR_MAX
+
+def filtrado_informacion(controller_data, controlador):
     """Página para filtrar datos por rango de años."""
     st.header("Filtrado de Información")
     st.write("Selecciona el rango de años para filtrar los datos.")
@@ -14,21 +23,15 @@ def filtrado_informacion(carpeta):
         value=(YEAR_MIN, YEAR_MAX)
     )
 
-    # Cargar datos y filtrar por años
-    datos = cargar_datos(carpeta)
-    if not datos.empty:
-        st.write("Datos cargados:")
-        st.dataframe(datos)
+    lista_de_anos = [range(selected_years[0], selected_years[1] + 1)]
+    keyword = st.text_input("Ingresa una palabra clave para filtrar por programa académico:")
 
-        # Filtrar según el rango de años seleccionado
-        if "Año" in datos.columns:
-            filtrados = datos[
-                (datos["Año"] >= selected_years[0]) & (datos["Año"] <= selected_years[1])
-            ]
-            st.write("Datos filtrados:")
-            st.dataframe(filtrados)
-        else:
-            st.warning("Los datos no contienen una columna llamada 'Año'.")
+
+    # Filtrar archivos por años usando el controller
+    archivos_filtrados = controller_data.filtrar_datos(controlador, lista_de_anos,keyword )
+
+    if archivos_filtrados:
+        st.write("Archivos filtrados:")
+        st.write(archivos_filtrados)
     else:
-        st.warning("No hay datos disponibles. Regresa a la pestaña de carga para cargar datos.")
-
+        st.warning("No hay archivos disponibles para el rango de años seleccionado.")
