@@ -16,18 +16,21 @@ def visualizacion_datos(carpeta):
         columnas = datos.columns.tolist()
         columna_seleccionada = st.selectbox("Selecciona la columna para graficar", columnas)
 
-        # Crear gráfico
-        fig, ax = plt.subplots()
-        datos[columna_seleccionada].value_counts().plot(kind='bar', ax=ax, color='skyblue')
+        # Botón para mostrar gráfica
+        if st.button("Mostrar gráfica"):
+            # Crear gráfico
+            fig, ax = plt.subplots()
+            datos[columna_seleccionada].value_counts().plot(kind='bar', ax=ax, color='skyblue')
 
-        # Personalizar el gráfico
-        ax.set_title(f"Distribución de {columna_seleccionada}", fontsize=16, fontweight='bold')
-        ax.set_xlabel(columna_seleccionada, fontsize=14)
-        ax.set_ylabel("Frecuencia", fontsize=14)
-        ax.tick_params(axis='x', rotation=45)
-        ax.grid(True, linestyle='--', alpha=0.7)
+            # Personalizar el gráfico
+            ax.set_title(f"Distribución de {columna_seleccionada}", fontsize=16, fontweight='bold')
+            ax.set_xlabel(columna_seleccionada, fontsize=14)
+            ax.set_ylabel("Frecuencia", fontsize=14)
+            ax.tick_params(axis='x', rotation=45)
+            ax.grid(True, linestyle='--', alpha=0.7)
 
-        # Mostrar gráfico en Streamlit
-        st.pyplot(fig)
+            # Mostrar gráfico en Streamlit
+            st.pyplot(fig)
+
     else:
         st.warning("No hay datos disponibles. Regresa a la pestaña de carga para cargar datos.")
