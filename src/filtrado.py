@@ -23,7 +23,7 @@ def filtrado_informacion(controller_data, controlador):
         value=(YEAR_MIN, YEAR_MAX)
     )
 
-    lista_de_anos = list(range(selected_years[0], selected_years[1] + 1))
+    lista_de_anos = [range(selected_years[0], selected_years[1] + 1)]
     keyword = st.text_input("Ingresa una palabra clave para filtrar por programa académico:")
 
 
